@@ -1,6 +1,9 @@
 package modelo;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class SolicitacaoVisita {
 	private Cliente cliente;
@@ -91,4 +94,42 @@ public class SolicitacaoVisita {
 	public void setStatus(StatusChamado status) {
 		this.status = status;
 	}
+	
+	
+	public String gerarRelatorio() {
+		
+		String valorFormatado,dataFormatada,diaSemana,areaFormatada;
+		Locale ptBr =  Locale.of("pt", "Br");
+		
+		NumberFormat fmtMoeda = NumberFormat.getCurrencyInstance(ptBr);
+		valorFormatado = fmtMoeda.format(this.valorEstimado);
+		
+		DateTimeFormatter  fmtData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		dataFormatada = this.dataVisita.format(fmtData);
+		
+		DateTimeFormatter fmtDiaSemana = DateTimeFormatter.ofPattern("EEEE",ptBr);
+		diaSemana = this.dataVisita.format(fmtDiaSemana);
+		
+		String textoTurno = "";
+		if (this.turno == Turno.MANHA) {
+			textoTurno = "pela manhã";
+		} else if (this.turno == Turno.TARDE) {
+			textoTurno = "pela tarde";
+		} else if (this.turno == Turno.NOITE) {
+			textoTurno = "pela noite";
+		}
+		
+		areaFormatada = String.format(ptBr, "%.2f" ,this.area);
+		
+		return String.format("Novo agendamento solicitado: %s, área de %s metros quadrados, estimativa de %s, para %s (%s) $s.",
+				this.tipoDeServico.getNome(),
+				areaFormatada,
+				valorFormatado,
+				diaSemana,
+				dataFormatada,
+				textoTurno);
+		
+		
+	}
+	
 }
