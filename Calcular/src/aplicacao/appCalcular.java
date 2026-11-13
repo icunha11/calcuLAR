@@ -3,6 +3,7 @@ package aplicacao;
  * Classe de aplicação do Calcular
  */
 
+import modelo.Profissional;
 import modelo.Revestimento;
 import modelo.Rodape;
 import modelo.Servico;
@@ -25,6 +26,23 @@ public class appCalcular {
 		for (TipoServico tipo : TipoServico.values() ) {
 			      System.out.println(tipo + " -> " + tipo.getNomeAmigavel());
 		}
+        System.out.println("--- Tabela de preços ---");
+		Profissional joao = new Profissional("1", "João", "71999990000", "joao@email.com", "Pedreiro", "Salvador");
+		joao.definirPreco(TipoServico.ALVENARIA, 50.0);
+		joao.definirPreco(TipoServico.REVESTIMENTO, 80.0);
+		
+		System.out.println(joao);
+		System.out.println("Faz alvenaria?" + joao.ofereceServico(TipoServico.ALVENARIA));
+		System.out.println("Faz pintura? " + joao.ofereceServico(TipoServico.PINTURA));
+		System.out.println("Preço do revestimento: "+ joao.getPreco(TipoServico.REVESTIMENTO));
+
+		try {
+		        
+		        joao.definirPreco(TipoServico.PINTURA, -10.0);
+		} catch (IllegalArgumentException e) {		
+                 System.out.println("Erro esperado: " + e.getMessage());
+
+				}
 		
 	}
 

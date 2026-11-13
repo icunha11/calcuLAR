@@ -40,6 +40,25 @@ public class Profissional extends Usuario {
 		this.especialidade = especialidade;
 	}
 
+public void definirPreco(TipoServico tipo, double valor) {
+	     if (valor <= 0) {
+			    throw new IllegalArgumentException("O preço deve ser maior que zero.");
+		 }
+		 precos.put(tipo, valor);
+		 
+		}
+
+		public boolean ofereceServico(TipoServico tipo) {
+			return precos.containsKey(tipo);
+		}
+		
+		public double getPreco(TipoServico tipo) {
+			      if (!ofereceServico(tipo)) {
+					         throw new IllegalArgumentException("O profissional não oferece " + tipo.getNomeAmigavel() + ".");
+				  }
+				  return precos.get(tipo);
+
+				}
 
 	public String getCidadeAtendimento() {
 		return cidadeAtendimento;
