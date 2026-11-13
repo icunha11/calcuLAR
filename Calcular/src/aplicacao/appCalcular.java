@@ -6,6 +6,7 @@ package aplicacao;
 import modelo.Revestimento;
 import modelo.Rodape;
 import modelo.Servico;
+import modelo.TipoServico;
 import servico.CalculadoraOrcamento;
 
 public class appCalcular {
@@ -19,6 +20,11 @@ public class appCalcular {
 
 		System.out.println(calc.calcularOrcamento(piso, 4, 5));   // 1600.0
 		System.out.println(calc.calcularOrcamento(rodape, 4, 5)); // 270.0
+
+		System.out.println("--- Tipos de serviço ---");
+		for (TipoServico tipo : TipoServico.values() ) {
+			      System.out.println(tipo + " -> " + tipo.getNomeAmigavel());
+		}
 		
 	}
 
