@@ -40,7 +40,14 @@ public class Profissional extends Usuario {
 		this.especialidade = especialidade;
 	}
 
-public void definirPreco(TipoServico tipo, double valor) {
+/** 
+ *  Cadastra ou atualiza o preço que o profissional cobra por um serviço.
+ * 
+ * @param tipo  tipo de serviço
+ * @param valor preço por metro quadrado, em reais
+ * @throws IllegalArgumentException se o valor for zero ou negativo
+ */
+	public void definirPreco(TipoServico tipo, double valor) {
 	     if (valor <= 0) {
 			    throw new IllegalArgumentException("O preço deve ser maior que zero.");
 		 }
@@ -48,10 +55,23 @@ public void definirPreco(TipoServico tipo, double valor) {
 		 
 		}
 
+	/**
+	 *  Informa se o profissional oferece um tipo de serviço.
+	 * 
+	 * @param tipo tipo de serviço.
+	 * @return true se há preço cadastrado para esse serviço
+	 */ 	
 		public boolean ofereceServico(TipoServico tipo) {
 			return precos.containsKey(tipo);
 		}
 		
+	/**
+	 *  Devolve o preço por metro quadrado de um serviço.
+	 * 
+	 * @param tipo tipo de serviço
+	 * @return preço por metro quadrado, em reais
+	 * @throws IllegalArgumentException se o profissional não oferece o serviço
+	 */
 		public double getPreco(TipoServico tipo) {
 			      if (!ofereceServico(tipo)) {
 					         throw new IllegalArgumentException("O profissional não oferece " + tipo.getNomeAmigavel() + ".");
