@@ -1,4 +1,7 @@
 package modelo;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Prestador de serviço autônomo, como pedreiro ou mestre de obras.
  * Além dos dados de {@link Usuario}, guarda a especialidade,
@@ -14,20 +17,17 @@ public class Profissional extends Usuario {
      * @param telefone          telefone de contato
      * @param email             e-mail de contato
      * @param especialidade     área de atuação (por exemplo, assentamento de piso)
-     * @param precoPorM2        valor cobrado por metro quadrado, em reais
      * @param cidadeAtendimento cidade onde o profissional atende
-     * @param avaliacaoMedia    nota média recebida dos clientes
      */
 	
 	private String especialidade;
-	private double precoPorM2;
+	private Map<TipoServico, Double> precos = new HashMap<>();
 	private String cidadeAtendimento;
 	private  double avaliacaoMedia=0;
 	
-	public Profissional(String id,String nome, String telefone,String email, String especialidade,double precoPorM2,String cidadeAtendimento) {
+	public Profissional(String id,String nome, String telefone,String email, String especialidade,String cidadeAtendimento) {
 		super(id,nome,telefone,email);
 		this.especialidade = especialidade;
-		this.precoPorM2 = precoPorM2;
 		this.cidadeAtendimento = cidadeAtendimento;
 		
 	}
@@ -40,13 +40,45 @@ public class Profissional extends Usuario {
 		this.especialidade = especialidade;
 	}
 
-	public double getPrecoPorM2() {
-		return precoPorM2;
-	}
+/** 
+ *  Cadastra ou atualiza o preço que o profissional cobra por um serviço.
+ * 
+ * @param tipo  tipo de serviço
+ * @param valor preço por metro quadrado, em reais
+ * @throws IllegalArgumentException se o valor for zero ou negativo
+ */
+	public void definirPreco(TipoServico tipo, double valor) {
+	     if (valor <= 0) {
+			    throw new IllegalArgumentException("O preço deve ser maior que zero.");
+		 }
+		 precos.put(tipo, valor);
+		 
+		}
 
-	public void setPrecoPorM2(double precoPorM2) {
-		this.precoPorM2 = precoPorM2;
-	}
+	/**
+	 *  Informa se o profissional oferece um tipo de serviço.
+	 * 
+	 * @param tipo tipo de serviço.
+	 * @return true se há preço cadastrado para esse serviço
+	 */ 	
+		public boolean ofereceServico(TipoServico tipo) {
+			return precos.containsKey(tipo);
+		}
+		
+	/**
+	 *  Devolve o preço por metro quadrado de um serviço.
+	 * 
+	 * @param tipo tipo de serviço
+	 * @return preço por metro quadrado, em reais
+	 * @throws IllegalArgumentException se o profissional não oferece o serviço
+	 */
+		public double getPreco(TipoServico tipo) {
+			      if (!ofereceServico(tipo)) {
+					         throw new IllegalArgumentException("O profissional não oferece " + tipo.getNomeAmigavel() + ".");
+				  }
+				  return precos.get(tipo);
+
+				}
 
 	public String getCidadeAtendimento() {
 		return cidadeAtendimento;
@@ -66,7 +98,7 @@ public class Profissional extends Usuario {
 	
 	@Override
 	public String toString() {
-	    return super.toString() + " - " + especialidade + " - R$ " + precoPorM2 + "/m² - " + cidadeAtendimento;
+	    return super.toString() + " - " + especialidade + " - "  + cidadeAtendimento;
 	}
 	
 	
