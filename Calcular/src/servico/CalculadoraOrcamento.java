@@ -1,5 +1,7 @@
 package servico;
 
+import java.util.ArrayList;
+import java.util.List;
 import modelo.Profissional;
 import modelo.Servico;
 import modelo.TipoServico;
@@ -30,6 +32,17 @@ public class CalculadoraOrcamento {
 public double calcularOrcamento(Profissional profissional, TipoServico tipo, double largura, double comprimento) {
 	     double area = calcularArea(largura, comprimento);
 		 return area * profissional.getPreco(tipo);
+}
 
-}
-}
+public List<Profissional> listarProfissionais(List<Profissional> profissionais, TipoServico tipo) {
+	     List<Profissional> resultado = new ArrayList<>();
+		 for (Profissional p : profissionais) {
+			        if (p.ofereceServico(tipo)) {
+						        resultado.add(p);
+					}
+
+		 }
+		 return resultado;
+
+		}
+	}
